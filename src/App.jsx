@@ -5,8 +5,9 @@ import { AuthProvider } from "./context/AuthContext"
 import ProtectedRoute from "./components/ProtectedRoute"
 import Layout from "./components/Layout"
 
+import Login from "./pages/Login"
+
 const Home = () => <div className="text-2xl font-bold text-gray-700">🏠 Home - Public Vehicle List</div>
-const Login = () => <div className="text-2xl font-bold text-gray-700">🔐 Login Page</div>
 const Dashboard = () => <div className="text-2xl font-bold text-gray-700">📊 Dashboard - Protected</div>
 const RegisterVehicle = () => <div className="text-2xl font-bold text-gray-700">🚗 Register Vehicle - Protected</div>
 const VehicleDetails = () => <div className="text-2xl font-bold text-gray-700">🔍 Vehicle Details - Protected</div>
