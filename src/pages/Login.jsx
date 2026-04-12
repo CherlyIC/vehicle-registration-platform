@@ -85,10 +85,6 @@ function Login() {
             ← Back to Home
           </Link>
         </p>
-
-        <div className="mt-6 p-3 bg-blue-50 rounded-md text-xs text-blue-600 text-center">
-          💡 Use: test@gmail.com / Password!234
-        </div>
       </div>
     </div>
   )

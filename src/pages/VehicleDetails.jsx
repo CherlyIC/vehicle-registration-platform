@@ -8,8 +8,6 @@ import {
   getVehicleInsurance
 } from "../services/api"
 
-// ── REUSABLE DETAIL ROW ───────────────────────────────────────
-// Displays a label and value pair in each tab
 function DetailRow({ label, value }) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-center py-3 border-b border-gray-100 last:border-0">
@@ -23,7 +21,6 @@ function DetailRow({ label, value }) {
   )
 }
 
-// ── STATUS BADGE ──────────────────────────────────────────────
 function StatusBadge({ status }) {
   const colors = {
     ACTIVE: "bg-emerald-100 text-emerald-700",
@@ -41,7 +38,6 @@ function StatusBadge({ status }) {
   )
 }
 
-// ── LOADING SPINNER ───────────────────────────────────────────
 function TabLoader() {
   return (
     <div className="flex items-center justify-center py-16">
@@ -53,7 +49,6 @@ function TabLoader() {
   )
 }
 
-// ── TAB ERROR ─────────────────────────────────────────────────
 function TabError({ message }) {
   return (
     <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm">
@@ -62,7 +57,6 @@ function TabError({ message }) {
   )
 }
 
-// ── INFO TAB ──────────────────────────────────────────────────
 function InfoTab({ id }) {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["vehicle-info", id],
@@ -98,7 +92,6 @@ function InfoTab({ id }) {
   )
 }
 
-// ── OWNER TAB ─────────────────────────────────────────────────
 function OwnerTab({ id }) {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["vehicle-owner", id],
@@ -127,7 +120,6 @@ function OwnerTab({ id }) {
   )
 }
 
-// ── REGISTRATION TAB ──────────────────────────────────────────
 function RegistrationTab({ id }) {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["vehicle-registration", id],
@@ -138,8 +130,6 @@ function RegistrationTab({ id }) {
   if (isError) return <TabError message="Failed to load registration info" />
 
   const reg = data?.data
-
-  // Format date helper
   const formatDate = (dateStr) => {
     if (!dateStr) return "—"
     return new Date(dateStr).toLocaleDateString("en-RW", {
@@ -174,7 +164,6 @@ function RegistrationTab({ id }) {
   )
 }
 
-// ── INSURANCE TAB ─────────────────────────────────────────────
 function InsuranceTab({ id }) {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["vehicle-insurance", id],
@@ -212,16 +201,11 @@ function InsuranceTab({ id }) {
   )
 }
 
-// ── MAIN COMPONENT ────────────────────────────────────────────
 function VehicleDetails() {
-  // Get the vehicle ID from the URL (/vehicle/:id)
   const { id } = useParams()
   const navigate = useNavigate()
-
-  // Track which tab is active
   const [activeTab, setActiveTab] = useState("info")
 
-  // Define our tabs
   const tabs = [
     { key: "info", label: "🚗 Info" },
     { key: "owner", label: "👤 Owner" },
@@ -232,7 +216,6 @@ function VehicleDetails() {
   return (
     <div className="max-w-3xl mx-auto">
 
-      {/* PAGE HEADER */}
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">
@@ -251,10 +234,8 @@ function VehicleDetails() {
         </button>
       </div>
 
-      {/* TAB CARD */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
 
-        {/* TAB BUTTONS */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div className="flex border-b border-gray-200 overflow-x-auto">
           {tabs.map(tab => (
             <button
@@ -270,13 +251,6 @@ function VehicleDetails() {
             </button>
           ))}
         </div>
-
-        {/* TAB CONTENT */}
-        {/* 
-          Each tab only fetches when it becomes active
-          TanStack Query caches the result so switching
-          back to a tab does NOT refetch — uses cache!
-        */}
         <div className="p-6">
           {activeTab === "info" && <InfoTab id={id} />}
           {activeTab === "owner" && <OwnerTab id={id} />}

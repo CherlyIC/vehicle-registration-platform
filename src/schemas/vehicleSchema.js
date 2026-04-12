@@ -2,7 +2,6 @@ import { z } from "zod"
 
 const currentYear = new Date().getFullYear()
 
-// ── STEP 1: VEHICLE INFO ──────────────────────────────────────
 export const step1Schema = z.object({
   manufacture: z
     .string()
@@ -66,7 +65,6 @@ export const step1Schema = z.object({
   ),
 })
 
-// ── STEP 2: OWNER INFO ────────────────────────────────────────
 export const step2Schema = z.object({
   ownerName: z
     .string()
@@ -106,7 +104,6 @@ export const step2Schema = z.object({
     .email("Please enter a valid email address"),
 
 }).refine(
-  // Conditional validation: companyRegNumber required if ownerType is COMPANY
   (data) => {
     if (data.ownerType === "COMPANY") {
       return data.companyRegNumber && data.companyRegNumber.trim() !== ""
@@ -119,7 +116,6 @@ export const step2Schema = z.object({
   }
 )
 
-// ── STEP 3: REGISTRATION & INSURANCE ─────────────────────────
 export const step3Schema = z.object({
   plateNumber: z
     .string()

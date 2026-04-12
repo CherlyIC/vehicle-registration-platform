@@ -7,8 +7,6 @@ import { createVehicle } from "../services/api"
 import { step1Schema, step2Schema, step3Schema } from "../schemas/vehicleSchema"
 import toast from "react-hot-toast"
 
-// ── REUSABLE INPUT COMPONENT ──────────────────────────────────
-// This shows a label, input, and error message together
 function FormField({ label, error, children }) {
   return (
     <div className="flex flex-col gap-1">
@@ -21,7 +19,7 @@ function FormField({ label, error, children }) {
   )
 }
 
-// ── REUSABLE INPUT STYLES ─────────────────────────────────────
+
 const inputClass = (error) =>
   `border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 transition ${
     error
@@ -29,7 +27,7 @@ const inputClass = (error) =>
       : "border-gray-300 focus:ring-blue-500 focus:border-transparent"
   }`
 
-// ── STEP INDICATOR ────────────────────────────────────────────
+
 function StepIndicator({ currentStep }) {
   const steps = [
     { number: 1, label: "Vehicle Info" },
@@ -42,7 +40,6 @@ function StepIndicator({ currentStep }) {
       {steps.map((step, index) => (
         <div key={step.number} className="flex items-center">
 
-          {/* STEP CIRCLE */}
           <div className="flex flex-col items-center">
             <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition ${
               currentStep === step.number
@@ -60,7 +57,6 @@ function StepIndicator({ currentStep }) {
             </span>
           </div>
 
-          {/* CONNECTOR LINE between steps */}
           {index < steps.length - 1 && (
             <div className={`w-24 h-1 mx-2 mb-4 rounded transition ${
               currentStep > step.number ? "bg-emerald-500" : "bg-gray-200"
@@ -73,36 +69,26 @@ function StepIndicator({ currentStep }) {
   )
 }
 
-// ── MAIN COMPONENT ────────────────────────────────────────────
 function RegisterVehicle() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-
-  // Track which step we're on (1, 2, or 3)
   const [currentStep, setCurrentStep] = useState(1)
-
-  // Store data from previous steps so we can merge it all at the end
   const [formData, setFormData] = useState({})
-
-  // Pick the correct schema based on current step
   const schemas = { 1: step1Schema, 2: step2Schema, 3: step3Schema }
 
-  // React Hook Form setup
-  // zodResolver connects Zod schema to React Hook Form
   const {
-    register,       // connects input to the form
-    handleSubmit,   // wraps our submit function
-    formState: { errors },  // contains all validation errors
-    watch,          // watches field values in real time
+    register,     
+    handleSubmit,   
+    formState: { errors }, 
+    watch,
   } = useForm({
     resolver: zodResolver(schemas[currentStep]),
-    mode: "onChange"  // validates as user types
+    mode: "onChange"  
   })
 
-  // Watch ownerType to conditionally show companyRegNumber
+ 
   const ownerType = watch("ownerType")
 
-  // CREATE VEHICLE MUTATION
   const createMutation = useMutation({
     mutationFn: createVehicle,
     onSuccess: () => {
@@ -111,7 +97,6 @@ function RegisterVehicle() {
       navigate("/dashboard")
     },
     onError: (error) => {
-      // Handle 422 validation errors from server
       const serverErrors = error?.response?.data?.errors
       if (serverErrors && Array.isArray(serverErrors)) {
         serverErrors.forEach(err => toast.error(err.message || err))
@@ -121,23 +106,17 @@ function RegisterVehicle() {
     }
   })
 
-  // HANDLE NEXT STEP
-  // handleSubmit validates the current step's fields
-  // if valid, saves data and moves to next step
   const handleNext = handleSubmit((data) => {
     setFormData(prev => ({ ...prev, ...data }))
     setCurrentStep(prev => prev + 1)
   })
 
-  // HANDLE FINAL SUBMIT (Step 3)
 const handleFinalSubmit = handleSubmit((data) => {
   const allData = { ...formData, ...data }
 
   const formattedData = {
     ...allData,
-    // Always include companyRegNumber even if empty
     companyRegNumber: allData.companyRegNumber || "",
-    // Convert dates to ISO format
     registrationDate: new Date(allData.registrationDate).toISOString(),
     expiryDate: new Date(allData.expiryDate).toISOString(),
     insuranceExpiryDate: new Date(allData.insuranceExpiryDate).toISOString(),
@@ -150,21 +129,16 @@ const handleFinalSubmit = handleSubmit((data) => {
   return (
     <div className="max-w-2xl mx-auto">
 
-      {/* PAGE HEADER */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-800">🚗 Register New Vehicle</h1>
         <p className="text-gray-500 text-sm mt-1">
           Fill in all details carefully across the 3 steps
         </p>
       </div>
-
-      {/* STEP INDICATOR */}
       <StepIndicator currentStep={currentStep} />
 
-      {/* FORM CARD */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
 
-        {/* ── STEP 1: VEHICLE INFO ── */}
         {currentStep === 1 && (
           <div>
             <h2 className="text-lg font-semibold text-gray-700 mb-5">
@@ -281,7 +255,6 @@ const handleFinalSubmit = handleSubmit((data) => {
           </div>
         )}
 
-        {/* ── STEP 2: OWNER INFO ── */}
         {currentStep === 2 && (
           <div>
             <h2 className="text-lg font-semibold text-gray-700 mb-5">
@@ -324,7 +297,6 @@ const handleFinalSubmit = handleSubmit((data) => {
                 />
               </FormField>
 
-              {/* Only show when ownerType is COMPANY */}
               {ownerType === "COMPANY" && (
                 <FormField label="Company Reg Number" error={errors.companyRegNumber?.message}>
                   <input
@@ -365,7 +337,6 @@ const handleFinalSubmit = handleSubmit((data) => {
           </div>
         )}
 
-        {/* ── STEP 3: REGISTRATION & INSURANCE ── */}
         {currentStep === 3 && (
           <div>
             <h2 className="text-lg font-semibold text-gray-700 mb-5">
@@ -493,10 +464,8 @@ const handleFinalSubmit = handleSubmit((data) => {
           </div>
         )}
 
-        {/* ── NAVIGATION BUTTONS ── */}
         <div className="flex justify-between mt-8 pt-4 border-t border-gray-100">
 
-          {/* BACK BUTTON */}
           {currentStep > 1 ? (
             <button
               type="button"
@@ -515,7 +484,6 @@ const handleFinalSubmit = handleSubmit((data) => {
             </button>
           )}
 
-          {/* NEXT or SUBMIT BUTTON */}
           {currentStep < 3 ? (
             <button
               type="button"
