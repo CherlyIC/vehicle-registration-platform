@@ -9,9 +9,7 @@ import Login from "./pages/Login"
 import Home from "./pages/Home"
 import Dashboard from "./pages/Dashboard"
 import RegisterVehicle from "./pages/RegisterVehicle"
-
-
-const VehicleDetails = () => <div className="text-2xl font-bold text-gray-700">🔍 Vehicle Details - Protected</div>
+import VehicleDetails from "./pages/VehicleDetails"
 
 const queryClient = new QueryClient()
 
