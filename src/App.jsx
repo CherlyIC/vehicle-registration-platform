@@ -7,9 +7,9 @@ import Layout from "./components/Layout"
 
 import Login from "./pages/Login"
 import Home from "./pages/Home"
+import Dashboard from "./pages/Dashboard"
 
 
-const Dashboard = () => <div className="text-2xl font-bold text-gray-700">📊 Dashboard - Protected</div>
 const RegisterVehicle = () => <div className="text-2xl font-bold text-gray-700">🚗 Register Vehicle - Protected</div>
 const VehicleDetails = () => <div className="text-2xl font-bold text-gray-700">🔍 Vehicle Details - Protected</div>
 
