@@ -1,46 +1,39 @@
 import axios from "axios"
 
 const api = axios.create({
-  baseURL: "https://vehicle-registry-api.onrender.com",
+  baseURL: "https://student-management-system-backend.up.railway.app",
   headers: {
     "Content-Type": "application/json"
   }
 })
 
 const getAllVehicles = () => {
-  return api.get("/vehicle")
+  return api.get("/api/vehicle-service/vehicle")
 }
-
 const getVehicleById = (id) => {
-  return api.get(`/vehicle/${id}`)
+  return api.get(`/api/vehicle-service/vehicle/${id}`)
 }
-
 const getVehicleInfo = (id) => {
-  return api.get(`/vehicle/${id}/info`)
+  return api.get(`/api/vehicle-service/vehicle/${id}/info`)
 }
-
 const getVehicleOwner = (id) => {
-  return api.get(`/vehicle/${id}/owner`)
+  return api.get(`/api/vehicle-service/vehicle/${id}/owner`)
 }
-
 const getVehicleRegistration = (id) => {
-  return api.get(`/vehicle/${id}/registration`)
+  return api.get(`/api/vehicle-service/vehicle/${id}/registration`)
 }
-
 const getVehicleInsurance = (id) => {
-  return api.get(`/vehicle/${id}/insurance`)
+  return api.get(`/api/vehicle-service/vehicle/${id}/insurance`)
 }
-
 const createVehicle = (vehicleData) => {
-  return api.post("/vehicle", vehicleData)
+  return api.post("/api/vehicle-service/vehicle", vehicleData)
 }
-
 const updateVehicle = (id, vehicleData) => {
-  return api.put(`/vehicle/${id}`, vehicleData)
+  return api.put(`/api/vehicle-service/vehicle/${id}`, vehicleData)
 }
 
 const deleteVehicle = (id) => {
-  return api.delete(`/vehicle/${id}`)
+  return api.delete(`/api/vehicle-service/vehicle/${id}`)
 }
 
 export {
